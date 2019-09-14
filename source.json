@@ -1,0 +1,4 @@
+{"recordsTotal":2,"recordsFiltered":2,"data":[
+    {"id":"49004","fname":"ABC","lname":"XYZ","email":"abc@xyz.com","status":"0"},
+    {"id":"49004","fname":"ppp","lname":"www","email":"ppp@www.com","status":"1"}
+                                             ]}

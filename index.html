@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Datattable</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+   <br>
+    <div class="container">
+        <table class="table table-striped table-condensed table-bordered-primary table-hover commonDataTable" data-url="source.json">
+           <thead>
+               <tr>
+                    <!-- Serial No. is default if you want you can remove the code or handle it however you like in dynamic_datatable.js file -->
+                    <th>No.</th>
+                    
+                    <!-- You need to provide key in the id for the value you want to be printed -->
+                    <th id="fname">First Name</th>
+                    <th id="lname">Last Name</th>
+                    <th id="email">Email</th>
+                    
+                    <!-- condition_render works like a switch case, status is  your key and 1 is the value that has been stored in status and you can set default to handle any unkinown value or else you will get error. -->
+                    
+                    <th data-condition_render='{"status":{"default":{"html":"This is default"},"1":{"html":"True"}}}'>status</th>
+                    
+                    <!-- You can add key in cutom msg using curly braces -->
+                    <th data-render="true" data-render_html="Hi, my email is {email}">Custom</th>
+                    
+                    <th data-render="true" data-render_html="<a href='javascript:void(0)' class='label label-warning'>Edit</a>">Action</th>
+                </tr>
+           </thead>
+        </table>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.mark.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap.min.js"></script>
+    <script src="js/datatables.mark.min.js"></script>
+    <script src="js/dynamic_datatable.js"></script>
+</body>
+</html>
