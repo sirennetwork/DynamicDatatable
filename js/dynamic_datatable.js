@@ -8,9 +8,16 @@ String.prototype.replaceArray = function(find, replace) {
   return replaceString;
 };
 
-var dataTable_url = $('.commonDataTable').attr('data-url');
-	
-	var obj = [
+ var filter_data = $('#form-filter').serializeArray();
+
+ $(document).on('click', '#form-filter-btn', function(){
+    filter_data = $('#form-filter').serializeArray();
+    $('.commonDataTable').DataTable().ajax.reload();
+ });
+
+$('.commonDataTable').each(function(){
+   var dataTable_url = $(this).attr('data-url');
+   var obj = [
 		{ mData: null,
 		  "bSortable":false,
           render: function(data, type, full, meta){
@@ -18,8 +25,7 @@ var dataTable_url = $('.commonDataTable').attr('data-url');
           }
         }
 	];
-
-	$('.commonDataTable th').each(function(){
+   $(this).find('th').each(function(){
 		var sortable = ($(this).attr('data-sortable') == 'false')?false:true;
 		if ($(this).attr('id') != false && $(this).attr('id') != undefined && ($(this).attr('data-manipulate_json') == undefined || $(this).attr('data-manipulate_json') == '')) {
 			obj.push({mData:$(this).attr('id'),"bSortable":sortable});
@@ -54,18 +60,23 @@ var dataTable_url = $('.commonDataTable').attr('data-url');
 			var str = '';
 			var conditional_cases = Array();
 
-			var condition_key = Object.keys(condition_render_json).map(function (key, value) { 
+			var condition_key = Object.keys(condition_render_json).map(function (key, value) {
 								return key; 
 							});
-			
 			obj.push({mData:null,
 					  "bSortable":sortable,
 					  render: function(data, type, full, meta){
+                        
 					  	for (var i = 0; i < condition_key.length; i++) {
-							conditional_cases = Object.keys(condition_render_json[condition_key[i]]).map(function (key, value) { 
+							conditional_cases = Object.keys(condition_render_json[condition_key[i]]).map(function (key, value) {
+                                            key = (key == 'null')?null:key;
 											return key; 
 										});
 						}
+                        console.log(conditional_cases);
+                        if(data['first_bidding_id'] == null){
+                         console.log(data['first_bidding_id']); 
+                        }
 						if (conditional_cases.includes(data[condition_key]) == true) {
 							var condition_html = condition_render_json[condition_key][data[condition_key]]['html'];
 						} else{
@@ -93,16 +104,23 @@ var dataTable_url = $('.commonDataTable').attr('data-url');
 
 		}
 	});
-
-
-
-	if (obj.length > 1) {
-		$('.commonDataTable').DataTable({
-			 mark: true,
-			"bProcessing": true,
-	        "bServerSide": true,
-	        "sAjaxSource": dataTable_url,
-	        "sServerMethod": "POST",
-	        "aoColumns": obj
-		});
+    
+    if (obj.length > 1) {
+		var table = $(this).DataTable({
+                         mark: true,
+                        "bProcessing": true,
+                        "bServerSide": true,
+                        "sAjaxSource": dataTable_url,
+                        "sServerMethod": "GET",
+                        "aoColumns": obj,
+                        "aaSorting": [[ 0, "desc" ]],
+                        "fnServerParams": function ( aoData ) {
+                         if (filter_data.length > 0) {
+                            for (var i = 0; i < filter_data.length; i++) {
+                              aoData.push(filter_data[i]);
+                           }
+                         }
+                       }
+                    });
 	}
+});
