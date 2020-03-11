@@ -63,41 +63,40 @@ $('.commonDataTable').each(function(){
 			var condition_key = Object.keys(condition_render_json).map(function (key, value) {
 								return key; 
 							});
+
 			obj.push({mData:null,
 					  "bSortable":sortable,
 					  render: function(data, type, full, meta){
-                        
+                        var condition_html = '';
 					  	for (var i = 0; i < condition_key.length; i++) {
 							conditional_cases = Object.keys(condition_render_json[condition_key[i]]).map(function (key, value) {
                                             key = (key == 'null')?null:key;
 											return key; 
 										});
+                            if (conditional_cases.includes(data[condition_key[i]]) == true) {
+                                condition_html += condition_render_json[condition_key[i]][data[condition_key[i]]]['html'];
+                            } else{
+                                condition_html += condition_render_json[condition_key[i]]['default']['html'];
+                            }
+
 						}
-                        console.log(conditional_cases);
-                        if(data['first_bidding_id'] == null){
-                         console.log(data['first_bidding_id']); 
+                        
+                        var replacer = condition_html.match(/[^{\}]+(?=})/g);
+                        var element = condition_html.match(/{([^}]+)}/g);
+
+                        if (replacer != null) {
+                            var replacer_value = Object.keys(data).map(function (key, value) { 
+                                return data[replacer[value]]; 
+                            });
+                            replacer_value = replacer_value.filter(function( element ) {
+                               return element !== undefined;
+                            });
+
+                            return condition_html.replaceArray(element,replacer_value).replace(/[{}]/g, "");
+                        } else{
+                            return condition_html;
                         }
-						if (conditional_cases.includes(data[condition_key]) == true) {
-							var condition_html = condition_render_json[condition_key][data[condition_key]]['html'];
-						} else{
-							var condition_html = condition_render_json[condition_key]['default']['html'];
-						}
-
-						var replacer = condition_html.match(/[^{\}]+(?=})/g);
-						var element = condition_html.match(/{([^}]+)}/g);
-
-						if (replacer != null) {
-							var replacer_value = Object.keys(data).map(function (key, value) { 
-								return data[replacer[value]]; 
-							});
-							replacer_value = replacer_value.filter(function( element ) {
-							   return element !== undefined;
-							});
-
-							return condition_html.replaceArray(element,replacer_value).replace(/[{}]/g, "");
-						} else{
-							return condition_html;
-						}	
+							
 					  }
 					});
 			
