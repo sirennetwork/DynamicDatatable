@@ -15,8 +15,14 @@ String.prototype.replaceArray = function(find, replace) {
     $('.commonDataTable').DataTable().ajax.reload();
  });
 
+ $(document).on('change', '#form-filter-btn', function(){
+    filter_data = $('#form-filter').serializeArray();
+    $('.commonDataTable').DataTable().ajax.reload();
+ });
+
 $('.commonDataTable').each(function(){
    var dataTable_url = $(this).attr('data-url');
+   var responsive = $(this).attr('data-responsive');
    var obj = [
 		{ mData: null,
 		  "bSortable":false,
@@ -73,12 +79,12 @@ $('.commonDataTable').each(function(){
                                             key = (key == 'null')?null:key;
 											return key; 
 										});
+                            
                             if (conditional_cases.includes(data[condition_key[i]]) == true) {
                                 condition_html += condition_render_json[condition_key[i]][data[condition_key[i]]]['html'];
                             } else{
                                 condition_html += condition_render_json[condition_key[i]]['default']['html'];
                             }
-
 						}
                         
                         var replacer = condition_html.match(/[^{\}]+(?=})/g);
@@ -106,20 +112,21 @@ $('.commonDataTable').each(function(){
     
     if (obj.length > 1) {
 		var table = $(this).DataTable({
-                         mark: true,
-                        "bProcessing": true,
-                        "bServerSide": true,
-                        "sAjaxSource": dataTable_url,
-                        "sServerMethod": "GET",
-                        "aoColumns": obj,
-                        "aaSorting": [[ 0, "desc" ]],
-                        "fnServerParams": function ( aoData ) {
-                         if (filter_data.length > 0) {
-                            for (var i = 0; i < filter_data.length; i++) {
-                              aoData.push(filter_data[i]);
-                           }
-                         }
-                       }
-                    });
+        mark: true,
+        "responsive":(responsive != undefined && responsive != '' && responsive != 'false')?true:false,
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": dataTable_url,
+        "sServerMethod": "GET",
+        "aoColumns": obj,
+        "aaSorting": [[ 0, "desc" ]],
+        "fnServerParams": function ( aoData ) {
+          if (filter_data.length > 0) {
+            for (var i = 0; i < filter_data.length; i++) {
+              aoData.push(filter_data[i]);
+            }
+          }
+        }
+    });
 	}
 });
