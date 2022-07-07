@@ -16,6 +16,6 @@ in you th set id="key", e.g <th id="fname"></th>
 
 # Responsive Datatable
 
-add data-responsive="true" in table tag to make the datatable responsive. e.g: <table class="commonDataTable" data-responsive="true">
+add data-responsive="true" in table tag to make the datatable responsive. e.g: "<table class="commonDataTable" data-responsive="true">"
 
 You can view the html code to get more better idea.
