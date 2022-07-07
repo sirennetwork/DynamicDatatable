@@ -9,12 +9,13 @@ use data-url attribute to set url where data can be fetched from
    
 2) Data Rendering
 3) curly brace support to manipulate your data, e.g Hi my name is {fname}. this will only work with data-render or data-condition_render attribute.
-4) write your own html styling using data-render="true" and data-render_html="Your HTML", e.g <th data-render="true" data-render_html="Hi, my email is {email}"></th>
+4) write your own html styling using data-render="true" and data-render_html="Your HTML", e.g &lt;th data-render="true" data-render_html="Hi, my email is {email}"&gt;</th>
 
 # How to display data?
-in you th set id="key", e.g <th id="fname"></th>
+in you th set id="key"
 
 # Responsive Datatable
+To Initiate datatable, Add class "commonDataTable" to ypur table
 
 add data-responsive="true" in table tag to make the datatable responsive. e.g: "<table class="commonDataTable" data-responsive="true">"
 
