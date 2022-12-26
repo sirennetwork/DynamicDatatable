@@ -113,7 +113,12 @@ $('.commonDataTable').each(function(){
     if (obj.length > 1) {
 		var table = $(this).DataTable({
         mark: true,
-        "responsive":(responsive != undefined && responsive != '' && responsive != 'false')?true:false,
+        "responsive":(responsive != undefined && responsive != '' && responsive != 'false')?{
+	        details: {
+	            type: 'column',
+	            target: 'tr'
+	        }
+	    }:false,
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": dataTable_url,
@@ -129,4 +134,10 @@ $('.commonDataTable').each(function(){
         }
     });
 	}
+});
+
+
+$(document).on('click','#form-reset-btn', function(){
+	$('#form-filter')[0].reset();
+	$('#form-filter-btn').trigger('click');
 });
