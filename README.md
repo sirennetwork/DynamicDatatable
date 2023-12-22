@@ -20,3 +20,6 @@ To Initiate datatable, Add class "commonDataTable" to ypur table
 add data-responsive="true" in table tag to make the datatable responsive. e.g: "&lt;table class="commonDataTable" data-responsive="true"&gt;"
 
 You can view the html code to get more better idea.
+
+# Need Our Support?
+For Paid support you can reach out to us by sending an email on: info@wolfnetwork.in or directly call us or whatsapp us on: +91 9137166653
